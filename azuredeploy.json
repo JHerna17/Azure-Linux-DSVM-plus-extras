@@ -47,7 +47,7 @@
       "type": "int",
       "defaultValue": 1,
       "metadata": {
-        "description": "Number of h2o nodes to provision"
+        "description": "Number of VMs to provision, set to more than 1 if a cluster is desired"
       }
     }
   },
@@ -56,21 +56,21 @@
     "imagePublisher": "microsoft-ads",
     "imageOffer": "linux-data-science-vm",
     "imageSKU": "linuxdsvm",
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'h2o')]",
+    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'dsvm')]",
     "availabilitySetName": "dsvmAvSet",
-    "networkSecurityGroupName": "dsvmh2oNSG",
+    "networkSecurityGroupName": "dsvmNSG",
     "virtualNetworkName": "dsvmVNET",
     "vnetAddressPrefix": "10.0.0.0/16",
     "publicIPAddressType": "Dynamic",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
-    "nicName": "h2oNIC",
+    "nicName": "NIC",
     "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
-    "customScriptFilePath": "https://raw.githubusercontent.com/pablomarin/h2o-azure-template/master/download_h2o.sh",
-    "customScriptCommandToExecute": "[concat('sh download_h2o.sh ', parameters('scaleNumber'))]",
+    "customScriptFilePath": "https://raw.githubusercontent.com/pablomarin/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
+    "customScriptCommandToExecute": "sh install_extras.sh",
     "vmExtensionName": "dsvmExtension",
-    "domainNameLabel": "[concat('h2ocluster-', uniqueString(deployment().name))]"
+    "domainNameLabel": "[concat('dsvm-', uniqueString(deployment().name))]"
   },
   "resources": [
     {
@@ -261,7 +261,7 @@
           "fileUris": [
             "[variables('customScriptFilePath')]"
           ],
-          "commandToExecute": "[concat(variables('customScriptCommandToExecute'), ' ', parameters('scaleNumber'))]"
+          "commandToExecute": "[concat(variables('customScriptCommandToExecute'), ' ', parameters('scaleNumber'), ' ', parameters('adminUserName'))]"
         }
       }
     }
