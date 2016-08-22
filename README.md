@@ -13,16 +13,16 @@ This template can also be extended to create a H2O cluster by setting the the <b
 
 This template will automatically: download the latest stable version of H2O on each node (at */dsvm/tools* folder), installs H2O for R and Python, install the latest Keras, Theano and XGBoost and run the h2o.jar.
 
-Once the deployment finishes creating, it is recommended to use the 1st VM (H2O-0) as the front-end (driver) VM where you can:
+Once the deployment finishes creating, it is recommended to use the 1st VM (DSVM-0) as the front-end (driver) VM where you can:
 
-1) Connect to <b> H2O Flow</b> by going to *http://\<VM DNS name or IP Address of H2O-0 node\>:54321/*</br>
-2) Connect to <b>Jupyter Notebook</b> by going to *https://\<VM DNS name or IP Address of H2O-0 node\>:8000/*
+1) Connect to <b> H2O Flow</b> by going to *http://\<VM DNS name or IP Address of DSVM-0 node\>:54321/*</br>
+2) Connect to <b>Jupyter Notebook</b> by going to *https://\<VM DNS name or IP Address of DSVM-0 node\>:8000/*
 
 This template lets you select from DS_v2 VM types (<a href="https://azure.microsoft.com/en-us/documentation/articles/storage-premium-storage/" target="_blank">Premiun Storage SSD drives</a>) for CPU and I/O intensive workloads.
 
 
 <b>Important Notes </b>:<br>
-- OS Disk by default is small (approx 30GB), this means that you have around 16GB of free space to start with. This is the same for all VM sizes. It is recommended that you add a SSD data disk to the driver node (H2O-0) by following these instructions: https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-attach-disk/
+- OS Disk by default is small (approx 30GB), this means that you have around 16GB of free space to start with. This is the same for all VM sizes. It is recommended that you add a SSD data disk to the driver node (DSVM-0) by following these instructions: https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-linux-classic-attach-disk/
 - Pick a VM size that provides RAM of at least 4x the size of your dataset. Azure VM sizes: https://azure.microsoft.com/en-us/pricing/details/virtual-machines/
 - Be aware that Azure subscriptions by default allow only 20 cores. If you get a Validation error on template deployment, this might be the cause. To increase the cores limit, follow these steps: https://blogs.msdn.microsoft.com/girishp/2015/09/20/increasing-core-quota-limits-in-azure/
 - Java heap size is set to the 90% of RAM available. If you need to use less heap size on the driver node (H2O-0), you must stop H2O and launch it again with less heap memory, by doing this
