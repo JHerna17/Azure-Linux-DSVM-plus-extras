@@ -32,7 +32,7 @@
     },
     "adminUserName": {
       "type": "string",
-      "defaultValue": "admin",
+      "defaultValue": "dsvm",
       "metadata": {
         "description": "Admin username"
       }
