@@ -1,4 +1,5 @@
 #!/bin/bash
+# ARGS: $1=scaleNumber $2=username
 set -e
 
 echo "Changing to dsvm/tools folder ..."
@@ -60,6 +61,13 @@ pip3 install -U xgboost
 echo "Installing Keras..." 
 pip install -U keras 
 pip3 install -U keras
+
+echo "Downloading cool notebooks.."
+cd /home/$2/notebooks
+curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-py/demos/H2O_tutorial_breast_cancer_classification.ipynb"
+curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-r/demos/rdemo.tutorial.eeg.eyestate.ipynb"
+curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
+
 
 echo "Running h2o.jar"
 # Use 90% of RAM for H2O.
