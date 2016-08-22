@@ -29,6 +29,7 @@ This template lets you select from DS_v2 VM types (<a href="https://azure.micros
 
 	> killall -q -v java <br>
 	> nohup java -Xmx[WHAT-YOU-WANT]m -jar /dsvm/tools/h2o.jar -flatfile /dsvm/tools/flatfile.txt 1> /dev/null 2> h2o.err &
+
 You will also need to run this command with [sudo] once the VM is restarted.
 
 ### Base VM image - DSVM
