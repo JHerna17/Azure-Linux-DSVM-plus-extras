@@ -62,9 +62,11 @@ echo "Installing Keras..."
 pip install -U keras 
 pip3 install -U keras
 
-echo "Installing AWS CLI..."
+echo "Installing AWS CLI and boto package..."
 pip install awscli --ignore-installed six
 pip3 install awscli --ignore-installed six
+pip install boto
+pip3 install boto
 
 echo "Downloading cool notebooks.."
 cd /home/$2/notebooks
