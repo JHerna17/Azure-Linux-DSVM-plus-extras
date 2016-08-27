@@ -62,6 +62,10 @@ echo "Installing Keras..."
 pip install -U keras 
 pip3 install -U keras
 
+echo "Installing AWS CLI..."
+pip install awscli --ignore-installed six
+pip3 install awscli --ignore-installed six
+
 echo "Downloading cool notebooks.."
 cd /home/$2/notebooks
 curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-py/demos/H2O_tutorial_breast_cancer_classification.ipynb"
