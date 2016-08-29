@@ -70,7 +70,7 @@
     "customScriptFilePath": "https://raw.githubusercontent.com/pablomarin/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
     "customScriptCommandToExecute": "sh install_extras.sh",
     "vmExtensionName": "dsvmExtension",
-    "domainNameLabel": "[concat('dsvm-', uniqueString(deployment().name))]"
+    "domainNameLabel": "[concat('dsvm-', uniqueString(deployment().id))]"
   },
   "resources": [
     {
@@ -226,7 +226,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/', uniqueString(deployment().name), '-', variables('vmName'), copyindex(), '.vhd')]"
+              "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/', uniqueString(deployment().id), '-', variables('vmName'), copyindex(), '.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
