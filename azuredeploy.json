@@ -1,275 +1,288 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.1",
-  "parameters": {
-    "storageAccountType": {
-      "type": "string",
-      "defaultValue": "Premium_LRS",
-      "allowedValues": [
-        "Standard_LRS",
-        "Premium_LRS"
-      ],
-      "metadata": {
-        "description": "Storage Account type. DS-series VMs must be deployed in Premium_LRS in order to have an SSD OS disk."
-      }
-    },
-    "vmSize": {
-      "type": "string",
-      "allowedValues": [
-        "Standard_DS1_v2",
-        "Standard_DS2_v2",
-        "Standard_DS3_v2",
-        "Standard_DS4_v2",
-        "Standard_DS5_v2",
-        "Standard_DS11_v2",
-        "Standard_DS12_v2",
-        "Standard_DS13_v2",
-        "Standard_DS14_v2"
-      ],
-      "metadata": {
-        "description": "Size of the VM"
-      }
-    },
-    "adminUserName": {
-      "type": "string",
-      "defaultValue": "dsvm",
-      "metadata": {
-        "description": "Admin username"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Admin password"
-      }
-    },
-    "scaleNumber": {
-      "type": "int",
-      "defaultValue": 1,
-      "metadata": {
-        "description": "Number of VMs to provision, set to more than 1 if a cluster is desired"
-      }
-    }
-  },
-  "variables": {
-    "vmName": "DSVM",
-    "imagePublisher": "microsoft-ads",
-    "imageOffer": "linux-data-science-vm",
-    "imageSKU": "linuxdsvm",
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'dsvm')]",
-    "availabilitySetName": "dsvmAvSet",
-    "networkSecurityGroupName": "dsvmNSG",
-    "virtualNetworkName": "dsvmVNET",
-    "vnetAddressPrefix": "10.0.0.0/16",
-    "publicIPAddressType": "Dynamic",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
-    "subnet1Name": "Subnet-1",
-    "subnet1Prefix": "10.0.0.0/24",
-    "nicName": "NIC",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
-    "customScriptFilePath": "https://raw.githubusercontent.com/pablomarin/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
-    "customScriptCommandToExecute": "sh install_extras.sh",
-    "vmExtensionName": "dsvmExtension",
-    "domainNameLabel": "[concat('dsvm-', uniqueString(resourceGroup().id))]"
-  },
-  "resources": [
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "accountType": "[parameters('storageAccountType')]"
-      }
-    },
-    {
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('availabilitySetName')]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "properties": { }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat('publicIP', copyIndex())]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "pip-loop",
-        "count": "[parameters('scaleNumber')]"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[concat(variables('domainNameLabel'), '-', copyIndex())]"
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {
+        "storageAccountType": {
+            "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Premium_LRS"
+            ],
+            "metadata": {
+                "description": "Storage Account type. DS-series VMs must be deployed in Premium_LRS in order to have an SSD OS disk."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "allowedValues": [
+                "Standard_DS1_v2",
+                "Standard_DS2_v2",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2",
+                "Standard_DS11_v2",
+                "Standard_DS12_v2",
+                "Standard_DS13_v2",
+                "Standard_DS14_v2"
+            ],
+            "metadata": {
+                "description": "Size of the VM"
+            }
+        },
+        "adminUserName": {
+            "type": "string",
+            "defaultValue": "dsvm",
+            "metadata": {
+                "description": "Admin username"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Admin password"
+            }
+        },
+        "scaleNumber": {
+            "type": "int",
+            "defaultValue": 1,
+            "metadata": {
+                "description": "Number of VMs to provision, set to more than 1 if a cluster is desired"
+            }
         }
-      }
     },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[variables('vnetAddressPrefix')]"
-          ]
-        },
-        "subnets": [
-          {
-            "name": "[variables('subnet1Name')]",
+    "variables": {
+        "vmName": "DSVM",
+        "imagePublisher": "microsoft-ads",
+        "imageOffer": "linux-data-science-vm",
+        "imageSKU": "linuxdsvm",
+        "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'dsvm')]",
+        "availabilitySetName": "dsvmAvSet",
+        "networkSecurityGroupName": "dsvmNSG",
+        "virtualNetworkName": "dsvmVNET",
+        "vnetAddressPrefix": "10.0.0.0/16",
+        "publicIPAddressType": "Dynamic",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+        "subnet1Name": "Subnet-1",
+        "subnet1Prefix": "10.0.0.0/24",
+        "nicName": "NIC",
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
+        "customScriptFilePath": "https://raw.githubusercontent.com/JHerna17/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
+        "customScriptCommandToExecute": "sh install_extras.sh",
+        "vmExtensionName": "dsvmExtension",
+        "domainNameLabel": "[concat('dsvm-', uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('storageAccountName')]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
             "properties": {
-              "addressPrefix": "[variables('subnet1Prefix')]"
+                "accountType": "[parameters('storageAccountType')]"
             }
-          }
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[concat(variables('networkSecurityGroupName'), copyIndex())]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "nsg-loop",
-        "count": "[parameters('scaleNumber')]"
-      },
-      "properties": {
-        "securityRules": [
-          {
-            "name": "H2O",
-            "properties": {
-              "priority": 1000,
-              "sourceAddressPrefix": "*",
-              "protocol": "Tcp",
-              "destinationPortRange": "54321",
-              "access": "Allow",
-              "direction": "inbound",
-              "sourcePortRange": "54321",
-              "destinationAddressPrefix": "*"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), copyIndex())]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "nic-loop",
-        "count": "[parameters('scaleNumber')]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyIndex())]",
-        "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
-        "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'), copyIndex())]"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "privateIPAllocationMethod": "Static",
-              "privateIPAddress": "[concat('10.0.0.', copyIndex(4))]",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat('publicIP', copyIndex()))]"
-              },
-              "subnet": {
-                "id": "[variables('subnet1Ref')]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "apiVersion": "2015-05-01-preview",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'), '-', copyIndex())]",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "vm-loop",
-        "count": "[parameters('scaleNumber')]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
-        "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]"
-      ],
-      "plan": {
-        "name": "[variables('imageSKU')]",
-        "publisher": "[variables('imagePublisher')]",
-        "product": "[variables('imageOffer')]"
-      },
-      "properties": {
-        "availabilitySet": {
-          "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
         },
-        "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
+        {
+            "type": "Microsoft.Compute/availabilitySets",
+            "name": "[variables('availabilitySetName')]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "properties": { }
         },
-        "osProfile": {
-          "computername": "[concat(variables('vmName'), '-', copyIndex())]",
-          "adminUsername": "[parameters('adminUserName')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
-            "sku": "[variables('imageSKU')]",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/', uniqueString(resourceGroup().id), '-', variables('vmName'), copyindex(), '.vhd')]"
+        {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[concat('publicIP', copyIndex())]",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "pip-loop",
+                "count": "[parameters('scaleNumber')]"
             },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyIndex()))]"
+            "properties": {
+                "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+                "dnsSettings": {
+                    "domainNameLabel": "[concat(variables('domainNameLabel'), '-', copyIndex())]"
+                }
             }
-          ]
+        },
+        {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[variables('virtualNetworkName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('vnetAddressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnet1Prefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[concat(variables('networkSecurityGroupName'), copyIndex())]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "nsg-loop",
+                "count": "[parameters('scaleNumber')]"
+            },
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "H2O",
+                        "properties": {
+                            "priority": 1000,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "Tcp",
+                            "destinationPortRange": "54321",
+                            "access": "Allow",
+                            "direction": "inbound",
+                            "sourcePortRange": "54321",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "RServer",
+                        "properties": {
+                            "priority": 1000,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "Tcp",
+                            "destinationPortRange": "8787",
+                            "access": "Allow",
+                            "direction": "inbound",
+                            "sourcePortRange": "8787",
+                            "destinationAddressPrefix": "*"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(variables('nicName'), copyIndex())]",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "nic-loop",
+                "count": "[parameters('scaleNumber')]"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', 'publicIP', copyIndex())]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'), copyIndex())]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat('10.0.0.', copyIndex(4))]",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat('publicIP', copyIndex()))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnet1Ref')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2015-05-01-preview",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[concat(variables('vmName'), '-', copyIndex())]",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "vm-loop",
+                "count": "[parameters('scaleNumber')]"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]",
+                "[concat('Microsoft.Compute/availabilitySets/', variables('availabilitySetName'))]"
+            ],
+            "plan": {
+                "name": "[variables('imageSKU')]",
+                "publisher": "[variables('imagePublisher')]",
+                "product": "[variables('imageOffer')]"
+            },
+            "properties": {
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets', variables('availabilitySetName'))]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": {
+                    "computername": "[concat(variables('vmName'), '-', copyIndex())]",
+                    "adminUsername": "[parameters('adminUserName')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('imagePublisher')]",
+                        "offer": "[variables('imageOffer')]",
+                        "sku": "[variables('imageSKU')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "osdisk",
+                        "vhd": {
+                            "uri": "[concat('http://', variables('storageAccountName'), '.blob.core.windows.net/vhds/', uniqueString(resourceGroup().id), '-', variables('vmName'), copyindex(), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyIndex()))]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmName'), '-', copyIndex(), '/', variables('vmExtensionName'))]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "ext-loop",
+                "count": "[parameters('scaleNumber')]"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), '-', copyIndex())]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.OSTCExtensions",
+                "type": "CustomScriptForLinux",
+                "typeHandlerVersion": "1.2",
+                "settings": {
+                    "fileUris": [
+                        "[variables('customScriptFilePath')]"
+                    ],
+                    "commandToExecute": "[concat(variables('customScriptCommandToExecute'), ' ', parameters('scaleNumber'), ' ', parameters('adminUserName'))]"
+                }
+            }
         }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), '-', copyIndex(), '/', variables('vmExtensionName'))]",
-      "apiVersion": "2015-05-01-preview",
-      "location": "[resourceGroup().location]",
-      "copy": {
-        "name": "ext-loop",
-        "count": "[parameters('scaleNumber')]"
-      },
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), '-', copyIndex())]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.2",
-        "settings": {
-          "fileUris": [
-            "[variables('customScriptFilePath')]"
-          ],
-          "commandToExecute": "[concat(variables('customScriptCommandToExecute'), ' ', parameters('scaleNumber'), ' ', parameters('adminUserName'))]"
+    ],
+    "outputs": {
+        "publicDNS": {
+            "type": "string",
+            "value": "[concat('http://', variables('domainNameLabel'), '-', '0', '.', resourceGroup().location, '.cloudapp.azure.com:54321')]"
         }
-      }
     }
-  ],
-  "outputs": {
-    "publicDNS": {
-      "type": "string",
-      "value": "[concat('http://', variables('domainNameLabel'), '-', '0', '.', resourceGroup().location, '.cloudapp.azure.com:54321')]"
-    }
-  }
 }
