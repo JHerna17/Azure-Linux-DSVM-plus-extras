@@ -2,16 +2,16 @@
 Automatically deploys in Azure the Linux DSVM using a template + installs the latest version of H2O for python and R, Keras, Theano and  XGBoost
 
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FAzure-Linux-DSVM-plus-extras%2Fmaster%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FJHerna17%2FAzure-Linux-DSVM-plus-extras%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fpablomarin%2FAzure-Linux-DSVM-plus-extras%2Fmaster%2Fazuredeploy.json" target="_blank">
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FJHerna17%2FAzure-Linux-DSVM-plus-extras%2Fmaster%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
 This template can also be extended to create a H2O cluster by setting the the <b>scaleNumber</b> parameter to specify the number of nodes in the cluster. Default is 1 for a single VM.
 
-This template will automatically: download the latest stable version of H2O on each node (at */dsvm/tools* folder), installs H2O for R and Python, install the latest Keras, Theano and XGBoost and run the h2o.jar.
+This template will automatically: download the latest stable version of H2O on each node (at */dsvm/tools* folder), installs H2O for R and Python, and run the h2o.jar.
 
 Once the deployment finishes creating, you can:
 
@@ -42,11 +42,6 @@ The Linux Data Science Virtual Machine is ideal to use as a base for H2O because
 - Azure Storage Explorer
 - Azure Command-Line for managing Azure resources
 - PostgresSQL Database
-- Machine learning Tools
-    - [Computational Network Toolkit (CNTK)](https://github.com/Microsoft/CNTK): a deep learning software from Microsoft Research
-    - [Vowpal Wabbit](https://github.com/JohnLangford/vowpal_wabbit): a fast machine learning system supporting techniques such as online, hashing, allreduce, reductions, learning2search, active, and interactive learning.
-    - [XGBoost](https://xgboost.readthedocs.org/en/latest/): a tool providing fast and accurate boosted tree implementation
-    - [Rattle](http://rattle.togaware.com/) (the R Analytical Tool To Learn Easily) : a tool that makes getting started with data analytics and machine learning in R easy with a GUI-based data exploration and modeling with automatic R code generation. 
 - Azure SDK in Java, Python, node.js, Ruby, PHP
 - Libraries in R and Python for use in Azure Machine Learning and other Azure services
 - Development tools and editors (Eclipse, Emacs, gedit, vi)
