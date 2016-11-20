@@ -1,5 +1,5 @@
 # Azure ARM Template to deploy a Linux Data Science VMs + extras
-Automatically deploys in Azure the Linux DSVM using a template + installs the latest version of H2O for python and R, Keras, Theano and  XGBoost
+Automatically deploys in Azure the Linux DSVM using a template + installs the latest version of H2O for python and R
 
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FJHerna17%2FAzure-Linux-DSVM-plus-extras%2Fmaster%2Fazuredeploy.json" target="_blank">
@@ -39,6 +39,7 @@ The Linux Data Science Virtual Machine is ideal to use as a base for H2O because
 - Microsoft R Open
 - Anaconda Python distribution (v 2.7 and v3.5), including popular data analysis libraries
 - Jupyter Notebook (R, Python)
+- RStudio server
 - Azure Storage Explorer
 - Azure Command-Line for managing Azure resources
 - PostgresSQL Database
