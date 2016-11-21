@@ -55,8 +55,8 @@ pip install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/Py
 pip3 install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/Python/h2o-${h2oVersion}-py2.py3-none-any.whl
 
 #echo "Upgrading XGBoost to the latest version..." 
-pip uninstall -U xgboost 
-pip3 uninstall -U xgboost
+pip uninstall xgboost 
+pip3 uninstall xgboost
 
 
 
