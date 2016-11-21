@@ -67,8 +67,8 @@ curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubuserco
 curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
 
 #echo "Install RStudio" 
-#wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
-#sudo yum install --nogpgcheck rstudio-server-rhel-1.0.44-x86_64.rpm
+sudo wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
+sudo yum install --nogpgcheck rstudio-server-rhel-1.0.44-x86_64.rpm
 
 
 echo "Running h2o.jar"
