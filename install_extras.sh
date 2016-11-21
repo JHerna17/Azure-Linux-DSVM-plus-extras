@@ -54,19 +54,11 @@ echo "Installing H2O for Python..."
 pip install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/Python/h2o-${h2oVersion}-py2.py3-none-any.whl
 pip3 install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/Python/h2o-${h2oVersion}-py2.py3-none-any.whl
 
-echo "Upgrading XGBoost to the latest version..." 
-pip install -U xgboost 
-pip3 install -U xgboost
+#echo "Upgrading XGBoost to the latest version..." 
+pip uninstall -U xgboost 
+pip3 uninstall -U xgboost
 
-echo "Installing Keras..." 
-pip install -U keras 
-pip3 install -U keras
 
-echo "Installing AWS CLI and boto package..."
-pip install awscli --ignore-installed six
-pip3 install awscli --ignore-installed six
-pip install boto
-pip3 install boto
 
 echo "Downloading cool notebooks.."
 cd /home/$2/notebooks
@@ -74,9 +66,9 @@ curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https:/
 curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-r/demos/rdemo.tutorial.eeg.eyestate.ipynb"
 curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
 
-echo "Install RStudio" 
-wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
-sudo yum install --nogpgcheck rstudio-server-rhel-1.0.44-x86_64.rpm
+#echo "Install RStudio" 
+#wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
+#sudo yum install --nogpgcheck rstudio-server-rhel-1.0.44-x86_64.rpm
 
 
 echo "Running h2o.jar"
