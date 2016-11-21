@@ -67,7 +67,7 @@
         "subnet1Prefix": "10.0.0.0/24",
         "nicName": "NIC",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
-        "customScriptFilePath": "https://raw.githubusercontent.com/pablomarin/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
+        "customScriptFilePath": "https://raw.githubusercontent.com/JHerna17/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
         "customScriptCommandToExecute": "sh install_extras.sh",
         "vmExtensionName": "dsvmExtension",
         "domainNameLabel": "[concat('dsvm-', uniqueString(resourceGroup().id))]"
