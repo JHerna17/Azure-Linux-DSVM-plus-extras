@@ -58,17 +58,15 @@ pip3 install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/P
 pip uninstall xgboost 
 pip3 uninstall xgboost
 
-
-
 echo "Downloading cool notebooks.."
 cd /home/$2/notebooks
 curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-py/demos/H2O_tutorial_breast_cancer_classification.ipynb"
 curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-r/demos/rdemo.tutorial.eeg.eyestate.ipynb"
 curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
 
-#echo "Install RStudio" 
-sudo wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
-sudo yum install --nogpgcheck rstudio-server-rhel-1.0.44-x86_64.rpm
+echo "Install RStudio" 
+wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
+yum install -y --nogpgcheck rstudio-server-rhel-1.0.44-x86_64.rpm
 
 
 echo "Running h2o.jar"
