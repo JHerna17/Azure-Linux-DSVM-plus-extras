@@ -1,0 +1,93 @@
+// createUI
+{
+    "handler": "Microsoft.Compute.MultiVm",
+    "version": "0.0.1-preview",
+    "parameters": {
+        "basics": [
+            {
+                "name": "adminUsername",
+                "type": "Microsoft.Compute.UserNameTextBox",
+                "label": "Username",
+                "toolTip": "Admin username for the virtual machines.",
+                "osPlatform": "Linux"
+            },
+            {
+                "name": "adminPassword",
+                "type": "Microsoft.Compute.CredentialsCombo",
+                "label": {
+                    "password": "Password",
+                    "confirmPassword": "Confirm password"
+                },
+                "toolTip": {
+                    "password": "Admin password for the virtual machines."
+                },
+                "osPlatform": "Linux"
+            }
+        ],
+        "steps": [
+            {
+                "name": "infrastructureConfig",
+                "label": "Infrastructure settings",
+                "subLabel": {
+                    "preValidation": "Configure the infrastructure settings",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Infrastructure settings",
+                "elements": [
+                    {
+                        "name": "VmCount",
+                        "type": "string",
+                        "label": "Number of VMs, set to more than 1 if a cluster is desired",
+                        "defaultValue": "1"
+                    },
+                    {
+                        "name": "storageAccount",
+                        "type": "Microsoft.Storage.StorageAccountSelector",
+                        "label": "Storage account",
+                        "defaultValue": {
+                            "type": "Standard_LRS"
+                        },
+                        "allowedValues": [
+                            "Standard_LRS",
+                            "Premium_LRS"
+                        ]
+                    },
+                    {
+                        "name": "vmSize",
+                        "type": "Microsoft.Compute.SizeSelector",
+                        "label": "Virtual machine size",
+                        "toolTip": "The size of the virtual machine ",                        
+                        "constraints": {
+                            "allowedValues": [
+                                "Standard_DS1_v2",
+                                "Standard_DS2_v2",
+                                "Standard_DS3_v2",
+                                "Standard_DS4_v2",
+                                "Standard_DS5_v2",
+                                "Standard_DS11_v2",
+                                "Standard_DS12_v2",
+                                "Standard_DS13_v2",
+                                "Standard_DS14_v2"
+                            ]
+                        },
+                        "osPlatform": "Linux",
+                        "imageReference": {
+                            "publisher": "microsoft-ads",
+                            "offer": "linux-data-science-vm",
+                            "sku": "linuxdsvm"
+                        },
+                        "count": "[steps('infrastructureConfig').vmCount]"
+                    }                    
+                ]
+            }
+        ],
+        "outputs": {
+            "location": "[location()]",
+            "adminUsername": "[basics('adminUsername')]",
+            "adminPassword": "[basics('adminPassword')]",            
+            "storageAccountType": "[steps('infrastructureConfig').storageAccount.type]",                        
+            "vmSize": "[steps('infrastructureConfig').vmSize]",
+            "vmCount": "[steps('infrastructureConfig').vmCount]"                        
+        }
+    }
+}
