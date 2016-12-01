@@ -75,4 +75,28 @@ xmxMb=$[ $tmp / 100 ]
 
 nohup java -Xmx${xmxMb}m -jar /dsvm/tools/h2o.jar -flatfile /dsvm/tools/flatfile.txt 1> /dev/null 2> h2o.err &
 
-echo Success.
+echo "Remove unsopported apps "
+# XGBOOST
+pip install --upgrade xgboost
+pip uninstall xgboost -y
+pip3 uninstall xgboost -y
+#PostgresSQL 
+yum remove postgres\* -y
+# R XGBOOST
+R -e "remove.packages(\"xgboost\")"
+
+# CNTK / Vw 
+cd /dsvm/tools/cntk
+rm -rf cntk
+rm -rf CNTK-2016-02-08-Linux-64bit-CPU-Only/
+rm -rf VowpalWabbit/
+rm -rf xgboost
+
+# Remove notebooks
+
+sudo rm -rf /home/dsvm/notebooks/DocumentDBSample.ipynb
+sudo rm -rf /home/dsvm/notebooks/IrisClassifierPyMLWebService.ipynb
+sudo rm -rf /home/dsvm/notebooks/SQLDW_Explorations.ipynb
+sudo rm -rf /home/dsvm/notebooks/LoadDataIntoDW.ipynb
+
+echo "Success!!"
