@@ -94,10 +94,16 @@ sudo rm -rf /home/dsvm/notebooks/LoadDataIntoDW.ipynb
 
 
 # CNTK / Vw 
-cd /dsvm/tools/
-rm -rf cntk
-rm -rf CNTK-2016-02-08-Linux-64bit-CPU-Only/
-rm -rf VowpalWabbit/
-rm -rf xgboost
+#cd /dsvm/tools/
+rm -rf /dsvm/tools/cntk
+rm -rf /dsvm/tools/CNTK-2016-02-08-Linux-64bit-CPU-Only/
+rm -rf /dsvm/tools/VowpalWabbit/
+rm -rf /dsvm/tools/xgboost
+rm -rf /usr/eclipse
+
+#unsopported tools 
+yum remove vim.tiny
+yum remove emacs -y
+yum remove gedit -y 
 
 echo "Success!!"
