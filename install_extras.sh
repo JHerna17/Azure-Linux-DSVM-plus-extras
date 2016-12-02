@@ -87,10 +87,10 @@ R -e "remove.packages(\"xgboost\")"
 
 # Remove notebooks
 
-sudo rm -rf /home/dsvm/notebooks/DocumentDBSample.ipynb
-sudo rm -rf /home/dsvm/notebooks/IrisClassifierPyMLWebService.ipynb
-sudo rm -rf /home/dsvm/notebooks/SQLDW_Explorations.ipynb
-sudo rm -rf /home/dsvm/notebooks/LoadDataIntoDW.ipynb
+rm -rf /home/dsvm/notebooks/DocumentDBSample.ipynb
+rm -rf /home/dsvm/notebooks/IrisClassifierPyMLWebService.ipynb
+rm -rf /home/dsvm/notebooks/SQLDW_Explorations.ipynb
+rm -rf /home/dsvm/notebooks/LoadDataIntoDW.ipynb
 
 
 # CNTK / Vw 
