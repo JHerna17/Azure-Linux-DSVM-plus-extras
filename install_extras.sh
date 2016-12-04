@@ -1,7 +1,7 @@
 #!/bin/bash
 # ARGS: $1=scaleNumber $2=username
 set -e
-$u=$SUDO_USER
+u="$SUDO_USER"
 
 echo "Changing to $u/tools folder ..."
 cd /$u/tools/
@@ -57,7 +57,7 @@ pip3 install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/P
 
 
 echo "Downloading cool notebooks.."
-cd /home/$2/notebooks
+cd /home/$u/notebooks
 curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-py/demos/H2O_tutorial_breast_cancer_classification.ipynb"
 curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-r/demos/rdemo.tutorial.eeg.eyestate.ipynb"
 curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
