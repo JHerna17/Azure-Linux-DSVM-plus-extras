@@ -1,9 +1,10 @@
 #!/bin/bash
 # ARGS: $1=scaleNumber $2=username
 set -e
+u=$SUDO_USER
 
-echo "Changing to dsvm/tools folder ..."
-cd /dsvm/tools/
+echo "Changing to $u/tools folder ..."
+cd /$u/tools/
 wait 
 
 # Adjust based on the build of H2O you want to download.
@@ -73,7 +74,7 @@ memTotalMb=$[ $memTotalKb / 1024 ]
 tmp=$[ $memTotalMb * 90 ]
 xmxMb=$[ $tmp / 100 ]
 
-nohup java -Xmx${xmxMb}m -jar /dsvm/tools/h2o.jar -flatfile /dsvm/tools/flatfile.txt 1> /dev/null 2> h2o.err &
+nohup java -Xmx${xmxMb}m -jar /$u/tools/h2o.jar -flatfile /$u/tools/flatfile.txt 1> /dev/null 2> h2o.err &
 
 echo "Remove unsopported apps "
 # XGBOOST
@@ -87,18 +88,18 @@ R -e "remove.packages(\"xgboost\")"
 
 # Remove notebooks
 
-rm -rf /home/dsvm/notebooks/DocumentDBSample.ipynb
-rm -rf /home/dsvm/notebooks/IrisClassifierPyMLWebService.ipynb
-rm -rf /home/dsvm/notebooks/SQLDW_Explorations.ipynb
-rm -rf /home/dsvm/notebooks/LoadDataIntoDW.ipynb
+rm -rf /home/$u/notebooks/DocumentDBSample.ipynb
+rm -rf /home/$u/notebooks/IrisClassifierPyMLWebService.ipynb
+rm -rf /home/$u/notebooks/SQLDW_Explorations.ipynb
+rm -rf /home/$u/notebooks/LoadDataIntoDW.ipynb
 
 
 # CNTK / Vw 
-#cd /dsvm/tools/
-rm -rf /dsvm/tools/cntk
-rm -rf /dsvm/tools/CNTK-2016-02-08-Linux-64bit-CPU-Only/
-rm -rf /dsvm/tools/VowpalWabbit/
-rm -rf /dsvm/tools/xgboost
+#cd /$u/tools/
+rm -rf /$u/tools/cntk
+rm -rf /$u/tools/CNTK-2016-02-08-Linux-64bit-CPU-Only/
+rm -rf /$u/tools/VowpalWabbit/
+rm -rf /$u/tools/xgboost
 rm -rf /usr/eclipse
 
 #unsopported tools 
