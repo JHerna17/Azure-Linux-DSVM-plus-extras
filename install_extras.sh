@@ -3,8 +3,8 @@
 set -e
 u="$SUDO_USER"
 
-echo "Changing to $u/tools folder ..."
-cd /$u/tools/
+echo "Changing to tools folder ..."
+cd /$2/tools/
 wait 
 
 # Adjust based on the build of H2O you want to download.
@@ -57,7 +57,7 @@ pip3 install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/P
 
 
 echo "Downloading cool notebooks.."
-cd /home/$u/notebooks
+cd /home/$2/notebooks
 curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-py/demos/H2O_tutorial_breast_cancer_classification.ipynb"
 curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-r/demos/rdemo.tutorial.eeg.eyestate.ipynb"
 curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
@@ -74,7 +74,7 @@ memTotalMb=$[ $memTotalKb / 1024 ]
 tmp=$[ $memTotalMb * 90 ]
 xmxMb=$[ $tmp / 100 ]
 
-nohup java -Xmx${xmxMb}m -jar /$u/tools/h2o.jar -flatfile /$u/tools/flatfile.txt 1> /dev/null 2> h2o.err &
+nohup java -Xmx${xmxMb}m -jar /$2/tools/h2o.jar -flatfile /$2/tools/flatfile.txt 1> /dev/null 2> h2o.err &
 
 echo "Remove unsopported apps "
 # XGBOOST
@@ -88,18 +88,18 @@ R -e "remove.packages(\"xgboost\")"
 
 # Remove notebooks
 
-rm -rf /home/$u/notebooks/DocumentDBSample.ipynb
-rm -rf /home/$u/notebooks/IrisClassifierPyMLWebService.ipynb
-rm -rf /home/$u/notebooks/SQLDW_Explorations.ipynb
-rm -rf /home/$u/notebooks/LoadDataIntoDW.ipynb
+rm -rf /home/$2/notebooks/DocumentDBSample.ipynb
+rm -rf /home/$2/notebooks/IrisClassifierPyMLWebService.ipynb
+rm -rf /home/$2/notebooks/SQLDW_Explorations.ipynb
+rm -rf /home/$2/notebooks/LoadDataIntoDW.ipynb
 
 
 # CNTK / Vw 
-#cd /$u/tools/
-rm -rf /$u/tools/cntk
-rm -rf /$u/tools/CNTK-2016-02-08-Linux-64bit-CPU-Only/
-rm -rf /$u/tools/VowpalWabbit/
-rm -rf /$u/tools/xgboost
+#cd /$2/tools/
+rm -rf /$2/tools/cntk
+rm -rf /$2/tools/CNTK-2016-02-08-Linux-64bit-CPU-Only/
+rm -rf /$2/tools/VowpalWabbit/
+rm -rf /$2/tools/xgboost
 rm -rf /usr/eclipse
 
 #unsopported tools 
