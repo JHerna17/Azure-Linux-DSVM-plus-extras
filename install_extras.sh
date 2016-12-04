@@ -1,7 +1,7 @@
 #!/bin/bash
 # ARGS: $1=scaleNumber $2=username
 set -e
-u=$SUDO_USER
+$u=$SUDO_USER
 
 echo "Changing to $u/tools folder ..."
 cd /$u/tools/
