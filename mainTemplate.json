@@ -53,7 +53,7 @@
         
     },
     "variables": {
-        "vmNamePrefix": "H2ODSVM",
+        "vmName": "H2ODSVM",
         "imagePublisher": "microsoft-ads",
         "imageOffer": "linux-data-science-vm",
         "imageSKU": "linuxdsvm",
@@ -123,6 +123,46 @@
                         "name": "[variables('subnet1Name')]",
                         "properties": {
                             "addressPrefix": "[variables('subnet1Prefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[concat(variables('networkSecurityGroupName'), copyIndex())]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "nsg-loop",
+                "count": "[parameters('vmCount')]"
+            },
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "H2O",
+                        "properties": {
+                            "priority": 1000,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "Tcp",
+                            "destinationPortRange": "54321",
+                            "access": "Allow",
+                            "direction": "inbound",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "RServer",
+                        "properties": {
+                            "priority": 2000,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "Tcp",
+                            "destinationPortRange": "8787",
+                            "access": "Allow",
+                            "direction": "inbound",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*"
                         }
                     }
                 ]
