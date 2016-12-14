@@ -11,18 +11,27 @@
                 "osPlatform": "Linux"
             },
             {
-                "name": "adminPassword",
-                "type": "Microsoft.Compute.CredentialsCombo",
-                "label": {
+                  "name": "SSHCredntials",
+                  "type": "Microsoft.Compute.CredentialsCombo",
+                  "label": {
+                    "authenticationType": "Authentication type",
                     "password": "Password",
-                    "confirmPassword": "Confirm password"
-                },
-                "toolTip": {
-                    "password": "Admin password for the virtual machines."
-                },
-                "osPlatform": "Linux"
-            }
-        ],
+                    "confirmPassword": "Confirm password",
+                    "sshPublicKey": "SSH public key"
+                  },
+                  "toolTip": {
+                    "authenticationType": "",
+                    "password": "",
+                    "sshPublicKey": ""
+                  },
+                            "constraints": {
+                                "required": true
+                            },
+                  "options": {
+                    "hideConfirmation": false
+                  },
+                  "osPlatform": "Linux"
+                }],
         "steps": [
             {
                 "name": "infrastructureConfig",
@@ -55,7 +64,13 @@
                         "name": "vmSize",
                         "type": "Microsoft.Compute.SizeSelector",
                         "label": "Virtual machine size",
-                        "toolTip": "The size of the virtual machine ",                        
+                        "toolTip": "The size of the virtual machine ",
+                        "recommendedSizes": [
+                            "Standard_DS11_v2",
+                            "Standard_DS12_v2",
+                            "Standard_DS13_v2",
+                            "Standard_DS14_v2"
+                        ],
                         "constraints": {
                             "allowedValues": [
                                 "Standard_DS1_v2",
@@ -81,12 +96,13 @@
             }
         ],
         "outputs": {
-            "location": "[location()]",
             "adminUsername": "[basics('adminUsername')]",
-            "adminPassword": "[basics('adminPassword')]",            
-            "storageAccountType": "[steps('infrastructureConfig').storageAccount.type]",                        
+            "storageAccountType": "[steps('infrastructureConfig').storageAccount.type]",
             "vmSize": "[steps('infrastructureConfig').vmSize]",
-            "vmCount": "[steps('infrastructureConfig').vmCount]"                        
+            "vmCount": "[steps('infrastructureConfig').vmCount]",
+            "authenticationType": "[basics('SSHCredntials').authenticationType]",
+            "adminPassword": "[basics('SSHCredntials').password]",
+            "sshKey": "[basics('SSHCredntials').sshPublicKey]"
         }
     }
 }
