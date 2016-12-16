@@ -250,7 +250,7 @@
                             "createOption": "fromImage",
                             "lun": 0,
                             "vhd": {
-                                "uri": "[concat(concat(reference(resourceId('jorgetest_rg', 'Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), parameters('virtualMachineName'), '-disk-1-20161216152356', '.vhd')]"
+                                "uri": "[concat(concat(reference(resourceId(resourceGroup().id, 'Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').primaryEndpoints['blob'], 'vhds/'), parameters('virtualMachineName'), '-disk-1-20161216152356', '.vhd')]"
                             }
                         }
                     ]
