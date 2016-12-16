@@ -56,11 +56,11 @@ pip install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/Py
 pip3 install https://s3.amazonaws.com/h2o-release/h2o/${h2oBranch}/${h2oBuild}/Python/h2o-${h2oVersion}-py2.py3-none-any.whl
 
 
-echo "Downloading cool Notebooks.."
-cd /home/$2/Notebooks
+echo "Downloading cool notebooks.."
+cd /home/$2/notebooks
 curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-py/demos/H2O_tutorial_breast_cancer_classification.ipynb"
 curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-r/demos/rdemo.tutorial.eeg.eyestate.ipynb"
-curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/Notebooks/TUTORIAL%20-%20running%20keras.ipynb"
+curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
 
 echo "Install RStudio" 
 wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
@@ -86,12 +86,12 @@ yum remove postgres\* -y
 # R XGBOOST
 R -e "remove.packages(\"xgboost\")"
 
-# Remove Notebooks
+# Remove notebooks
 
-rm -rf /home/$2/Notebooks/DocumentDBSample.ipynb
-rm -rf /home/$2/Notebooks/IrisClassifierPyMLWebService.ipynb
-rm -rf /home/$2/Notebooks/SQLDW_Explorations.ipynb
-rm -rf /home/$2/Notebooks/LoadDataIntoDW.ipynb
+rm -rf /home/$2/notebooks/DocumentDBSample.ipynb
+rm -rf /home/$2/notebooks/IrisClassifierPyMLWebService.ipynb
+rm -rf /home/$2/notebooks/SQLDW_Explorations.ipynb
+rm -rf /home/$2/notebooks/LoadDataIntoDW.ipynb
 
 
 # CNTK / Vw 
