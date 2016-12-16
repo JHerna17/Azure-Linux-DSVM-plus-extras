@@ -1,19 +1,18 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.1",
     "parameters": {
-        "adminUsername": {
+        "storageAccountType": {
             "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Premium_LRS"
+            ],
             "metadata": {
-                "description": "Admin username"
+                "description": "Storage Account type. DS-series VMs must be deployed in Premium_LRS in order to have an SSD OS disk."
             }
         },
-        "adminPassword": {
-            "type": "securestring",
-            "metadata": {
-                "description": "Admin password"
-            }
-        },        
         "vmSize": {
             "type": "string",
             "allowedValues": [
@@ -31,34 +30,36 @@
                 "description": "Size of the VM"
             }
         },
+        "adminUserName": {
+            "type": "string",
+            "defaultValue": "dsvm",
+            "metadata": {
+                "description": "Admin username"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Admin password"
+            }
+        },
         "vmCount": {
             "type": "int",
             "defaultValue": 1,
             "metadata": {
-                "description": "Number of VMs to deploy"
-            }
-        },        
-        "storageAccountType": {
-            "type": "string",
-            "defaultValue": "Premium_LRS",
-            "allowedValues": [
-                "Premium_LRS"
-            ],
-            "metadata": {
-                "description": "Storage Account type. DS-series VMs must be deployed in Premium_LRS in order to have an SSD OS disk."
+                "description": "Number of VMs to provision, set to more than 1 if a cluster is desired"
             }
         }
-        
     },
     "variables": {
-        "vmName": "H2ODSVM",
+        "vmName": "DSVM",
         "imagePublisher": "microsoft-ads",
         "imageOffer": "linux-data-science-vm",
         "imageSKU": "linuxdsvm",
         "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'dsvm')]",
-        "availabilitySetName": "H2OdsvmAvSet",
-        "networkSecurityGroupName": "H2OdsvmNSG",
-        "virtualNetworkName": "H2OVNET",
+        "availabilitySetName": "dsvmAvSet",
+        "networkSecurityGroupName": "dsvmNSG",
+        "virtualNetworkName": "dsvmVNET",
         "vnetAddressPrefix": "10.0.0.0/16",
         "publicIPAddressType": "Dynamic",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
@@ -68,9 +69,8 @@
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
         "customScriptFilePath": "https://raw.githubusercontent.com/JHerna17/Azure-Linux-DSVM-plus-extras/master/install_extras.sh",
         "customScriptCommandToExecute": "sh install_extras.sh",
-        "vmExtensionName": "H2OdsvmExtension",
-        "domainNameLabel": "[concat('h2odsvm-', uniqueString(resourceGroup().id))]"
-        
+        "vmExtensionName": "dsvmExtension",
+        "domainNameLabel": "[concat('dsvm-', uniqueString(resourceGroup().id))]"
     },
     "resources": [
         {
@@ -225,7 +225,7 @@
                     "vmSize": "[parameters('vmSize')]"
                 },
                 "osProfile": {
-                    "computerName": "[concat(variables('vmName'), '-', copyIndex())]",
+                    "computername": "[concat(variables('vmName'), '-', copyIndex())]",
                     "adminUsername": "[parameters('adminUserName')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
@@ -278,6 +278,11 @@
                 }
             }
         }
-
-    ]
+    ],
+    "outputs": {
+        "publicDNS": {
+            "type": "string",
+            "value": "[concat('http://', variables('domainNameLabel'), '-', '0', '.', resourceGroup().location, '.cloudapp.azure.com:54321')]"
+        }
+    }
 }
