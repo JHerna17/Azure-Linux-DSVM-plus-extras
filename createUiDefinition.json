@@ -44,7 +44,7 @@
                 "elements": [
                     {
                         "name": "VmCount",
-                        "type": "int",
+                        "type": "Microsoft.Common.TextBox",
                         "label": "Number of VMs, set to more than 1 if a cluster is desired",
                         "defaultValue": "1"
                     },
