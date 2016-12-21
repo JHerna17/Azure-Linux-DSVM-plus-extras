@@ -53,10 +53,9 @@
                         "type": "Microsoft.Storage.StorageAccountSelector",
                         "label": "Storage account",
                         "defaultValue": {
-                            "type": "Standard_LRS"
+                            "type": "Premium_LRS"
                         },
                         "allowedValues": [
-                            "Standard_LRS",
                             "Premium_LRS"
                         ]
                     },
@@ -90,19 +89,18 @@
                             "offer": "linux-data-science-vm",
                             "sku": "linuxdsvm"
                         },
-                        "count": "[steps('infrastructureConfig').vmCount]"
+                        "count": "[steps('infrastructureConfig').VmCount]"
                     }                    
                 ]
             }
         ],
         "outputs": {
-            "adminUsername": "[basics('adminUsername')]",
+            "adminUsername": "[basics('adminUsername')]",            
             "storageAccountType": "[steps('infrastructureConfig').storageAccount.type]",
             "vmSize": "[steps('infrastructureConfig').vmSize]",
-            "vmCount": "[steps('infrastructureConfig').vmCount]",
-            "authenticationType": "[basics('SSHCredntials').authenticationType]",
-            "adminPassword": "[basics('SSHCredntials').password]",
-            "sshKey": "[basics('SSHCredntials').sshPublicKey]"
+            "vmCount": "[steps('infrastructureConfig').VmCount]",            
+            "adminPassword": "[basics('SSHCredntials').password]"
+            
         }
     }
 }
