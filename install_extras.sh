@@ -4,7 +4,7 @@ set -e
 u="$SUDO_USER"
 
 echo "Changing to tools folder ..."
-cd /$2/tools/
+cd /dsvm/tools/
 wait 
 
 # Adjust based on the build of H2O you want to download.
@@ -85,11 +85,11 @@ rm -rf /home/$2/notebooks/LoadDataIntoDW.ipynb
 
 
 # CNTK / Vw 
-#cd /$2/tools/
-rm -rf /$2/tools/cntk
-rm -rf /$2/tools/CNTK-2016-02-08-Linux-64bit-CPU-Only/
-rm -rf /$2/tools/VowpalWabbit/
-rm -rf /$2/tools/xgboost
+#cd /dsvm/tools/
+rm -rf /dsvm/tools/cntk
+rm -rf /dsvm/tools/CNTK-2016-02-08-Linux-64bit-CPU-Only/
+rm -rf /dsvm/tools/VowpalWabbit/
+rm -rf /dsvm/tools/xgboost
 rm -rf /usr/eclipse
 
 #unsopported tools 
@@ -104,7 +104,7 @@ memTotalMb=$[ $memTotalKb / 1024 ]
 tmp=$[ $memTotalMb * 90 ]
 xmxMb=$[ $tmp / 100 ]
 
-nohup java -Xmx${xmxMb}m -jar /$2/tools/h2o.jar -flatfile /$2/tools/flatfile.txt 1> /dev/null 2> h2o.err &
+nohup java -Xmx${xmxMb}m -jar /dsvm/tools/h2o.jar -flatfile /dsvm/tools/flatfile.txt 1> /dev/null 2> h2o.err &
 
 
 echo "Success!!"
