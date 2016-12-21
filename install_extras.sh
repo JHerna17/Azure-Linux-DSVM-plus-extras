@@ -60,21 +60,11 @@ echo "Downloading cool notebooks.."
 cd /home/$2/notebooks
 curl --silent -o H2O_pydemo_tutorial_breast_cancer_classification.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-py/demos/H2O_tutorial_breast_cancer_classification.ipynb"
 curl --silent -o H2O_rdemo_tutorial_eeg_eyestate.ipynb "https://raw.githubusercontent.com/h2oai/h2o-3/master/h2o-r/demos/rdemo.tutorial.eeg.eyestate.ipynb"
-curl --silent -o KERAS_tutorial.ipynb "https://raw.githubusercontent.com/dolaameng/deeplearning-exploration/master/notebooks/TUTORIAL%20-%20running%20keras.ipynb"
 
 echo "Install RStudio" 
 wget https://download2.rstudio.org/rstudio-server-rhel-1.0.44-x86_64.rpm
 yum install -y --nogpgcheck rstudio-server-rhel-1.0.44-x86_64.rpm
 
-
-echo "Running h2o.jar"
-# Use 90% of RAM for H2O.
-memTotalKb=`cat /proc/meminfo | grep MemTotal | sed 's/MemTotal:[ \t]*//' | sed 's/ kB//'`
-memTotalMb=$[ $memTotalKb / 1024 ]
-tmp=$[ $memTotalMb * 90 ]
-xmxMb=$[ $tmp / 100 ]
-
-nohup java -Xmx${xmxMb}m -jar /$2/tools/h2o.jar -flatfile /$2/tools/flatfile.txt 1> /dev/null 2> h2o.err &
 
 echo "Remove unsopported apps "
 # XGBOOST
@@ -106,5 +96,15 @@ rm -rf /usr/eclipse
 yum remove vim.tiny
 yum remove emacs -y
 yum remove gedit -y 
+
+echo "Running h2o.jar"
+# Use 90% of RAM for H2O.
+memTotalKb=`cat /proc/meminfo | grep MemTotal | sed 's/MemTotal:[ \t]*//' | sed 's/ kB//'`
+memTotalMb=$[ $memTotalKb / 1024 ]
+tmp=$[ $memTotalMb * 90 ]
+xmxMb=$[ $tmp / 100 ]
+
+nohup java -Xmx${xmxMb}m -jar /$2/tools/h2o.jar -flatfile /$2/tools/flatfile.txt 1> /dev/null 2> h2o.err &
+
 
 echo "Success!!"
